@@ -12,6 +12,11 @@ const creatUser = async (userInfos) => {
   return token;
 };
 
+const checkIfEmailExist = async (email) => {
+  const user = await User.findOne({ where: { email } });
+  return user;
+};
 module.exports = {
   creatUser,
+  checkIfEmailExist,
 };
