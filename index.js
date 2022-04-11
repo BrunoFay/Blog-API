@@ -3,12 +3,14 @@ const express = require('express');
 const app = express();
 const errorMiddleware = require('./middlewares/genericErrorMiddleware');
 const users = require('./controllers/userController');
+const login = require('./controllers/loginController');
 
 app.use(express.json());
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (request, response) => {
   response.send();
 });
+app.use('/login', login);
 app.use('/user', users);
 app.use(errorMiddleware);
 
