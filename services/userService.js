@@ -8,10 +8,15 @@ const creatUser = async (userInfos) => {
     algorithm: 'HS256',
   };
   await User.create(userInfos);
-  const token = jwt.sign({ data: userInfos }, process.env.JWT_SECRET, jwtConfig);
+  const token = jwt.sign({ data: { email: userInfos.email,
+     password: userInfos.password } }, process.env.JWT_SECRET, jwtConfig);
   return token;
 };
 
+const listAllUsers = async () => {
+  const allUsers = await User.findAll();
+  return allUsers;
+};
 const checkIfEmailExist = async (email) => {
   const user = await User.findOne({ where: { email } });
   return user;
@@ -19,4 +24,5 @@ const checkIfEmailExist = async (email) => {
 module.exports = {
   creatUser,
   checkIfEmailExist,
+  listAllUsers,
 };
