@@ -16,4 +16,13 @@ categoryRouter.post('/', tokenJWTValidate, newCategoryValidates, async (req, res
   }
 });
 
+categoryRouter.get('/', tokenJWTValidate, async (req, res, next) => {
+  try {
+    const response = await categoryService.listAllCategories();
+    return res.status(200).json(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = categoryRouter;
