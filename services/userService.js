@@ -8,8 +8,12 @@ const creatUser = async (userInfos) => {
     algorithm: 'HS256',
   };
   await User.create(userInfos);
-  const token = jwt.sign({ data: { email: userInfos.email,
-     password: userInfos.password } }, process.env.JWT_SECRET, jwtConfig);
+  const token = jwt.sign({
+    data: {
+      email: userInfos.email,
+      password: userInfos.password,
+    },
+  }, process.env.JWT_SECRET, jwtConfig);
   return token;
 };
 
@@ -19,7 +23,7 @@ const listAllUsers = async () => {
 };
 const listUserById = async (id) => {
   const allUsers = await User.findByPk(id);
-  return allUsers;
+  return allUsers ? allUsers.dataValues : null;
 };
 const checkIfEmailExist = async (email) => {
   const user = await User.findOne({ where: { email } });

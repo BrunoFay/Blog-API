@@ -28,7 +28,7 @@ userRouter.get('/:id', tokenJWTValidate, async (req, res, next) => {
     const { id } = req.params;
     const response = await userService.listUserById(id);
     if (!response) return res.status(404).json({ message: 'User does not exist' });
-    return res.status(200).json(response.dataValues);
+    return res.status(200).json(response);
   } catch (error) {
     next(error);
   }
