@@ -17,6 +17,10 @@ const listAllUsers = async () => {
   const allUsers = await User.findAll();
   return allUsers;
 };
+const listUserById = async (id) => {
+  const allUsers = await User.findByPk(id);
+  return allUsers;
+};
 const checkIfEmailExist = async (email) => {
   const user = await User.findOne({ where: { email } });
   return user;
@@ -25,4 +29,5 @@ module.exports = {
   creatUser,
   checkIfEmailExist,
   listAllUsers,
+  listUserById,
 };
