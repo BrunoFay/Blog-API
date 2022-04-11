@@ -16,13 +16,38 @@ const listAllPosts = async () => {
       {
         model: Category,
         as: 'categories',
-        through: { attributes: [] }, 
+        through: { attributes: [] },
       }],
     });
   return allPosts;
+};
+const checkIfPostExistInDb = async (id) => {
+  const postExist = await BlogPost.findByPk(id);
+  return postExist;
+};
+const listPostById = async (id) => {
+  const postValidate = await checkIfPostExistInDb(id);
+  if (!postValidate) return false;
+  const post = await BlogPost
+    .findOne({
+      where: { id },
+      include: [{
+        model: User,
+        as: 'user',
+        attributes: { exclude: ['password'] },
+      },
+      {
+        model: Category,
+        as: 'categories',
+        through: { attributes: [] },
+      }],
+    });
+  return post;
 };
 
 module.exports = {
   creatPost,
   listAllPosts,
+  listPostById,
+
 };
