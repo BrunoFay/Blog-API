@@ -17,4 +17,13 @@ blogPostRouter.post('/', tokenJWTValidate, blogPostValidate, async (req, res, ne
     next(error);
   }
 });
+
+blogPostRouter.get('/', tokenJWTValidate, async (req, res, next) => {
+  try {
+    const response = await blogPostService.listAllPosts();
+    return res.status(200).json(response);
+  } catch (error) {
+    next(error);
+  }
+});
 module.exports = blogPostRouter;
