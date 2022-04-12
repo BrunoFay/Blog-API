@@ -1,8 +1,20 @@
-const { BlogPost, User, Category } = require('../models');
+const { BlogPost, User, Category, PostsCategorie } = require('../models');
 
+const createLinkPostAndCategory = async (categories, postId) => {
+  categories.map(async (category) => {
+    await PostsCategorie.create({ postId, categoryId: category });
+  });
+};
 const creatPost = async (postInfos) => {
-  const newPost = await BlogPost.create(postInfos);
-  return newPost.dataValues;
+  const postFormated = {
+    ...postInfos,
+    published: Date.now(),
+    updated: Date.now(),
+  };
+  const newPost = await BlogPost.create(postFormated);
+  const newPostResponse = newPost.dataValues;
+  await createLinkPostAndCategory(postInfos.categoryIds, newPostResponse.id);
+  return newPostResponse;
 };
 
 const listAllPosts = async () => {
@@ -45,9 +57,28 @@ const listPostById = async (id) => {
   return post;
 };
 
+const editPostById = async (postUpdated, id) => {
+  await BlogPost.update(
+    { title: postUpdated.title, content: postUpdated.content },
+    { where: { id } },
+);
+  const postEdited = await BlogPost
+    .findOne({
+      where: { id },
+include: [
+        {
+          model: Category,
+          as: 'categories',
+          through: { attributes: [] },
+
+        }],
+      attributes: { exclude: ['id', 'published', 'updated'] },
+    });
+  return postEdited;
+};
 module.exports = {
   creatPost,
   listAllPosts,
   listPostById,
-
+  editPostById,
 };

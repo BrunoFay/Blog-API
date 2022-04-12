@@ -27,4 +27,5 @@ const validateContent = (req, res, next) => {
   if (!content) return res.status(400).json({ message: '"content" is required' });
   next();
 };
+
 module.exports = [validateTitle, validateContent, validateCategoryIds];

@@ -3,16 +3,16 @@ const express = require('express');
 const blogPostRouter = express.Router();
 const blogPostService = require('../services/blogPostService');
 const blogPostValidate = require('../middlewares/blogPostValidate');
+const blogPostUpdateValidate = require('../middlewares/blogPostUpdateValidate');
 const tokenJWTValidate = require('../auth/tokenJWTValidate');
 
 blogPostRouter.post('/', tokenJWTValidate, blogPostValidate, async (req, res, next) => {
   try {
     const { title, content, categoryIds } = req.body;
-    const blogPostInfos = { title, content, categoryIds };
-    const response = await blogPostService.creatPost(blogPostInfos);
     const { id: userId } = req.user.dataValues;
-    const formatedResponse = { ...response, userId };
-    return res.status(201).json(formatedResponse);
+    const blogPostInfos = { title, content, categoryIds, userId };
+    const response = await blogPostService.creatPost(blogPostInfos);
+    return res.status(201).json(response);
   } catch (error) {
     next(error);
   }
@@ -37,4 +37,18 @@ blogPostRouter.get('/:id', tokenJWTValidate, async (req, res, next) => {
     next(error);
   }
 });
+blogPostRouter.put('/:id',
+  tokenJWTValidate,
+  blogPostUpdateValidate, async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { title, content } = req.body;
+      const postToEdit = { title, content };
+      const response = await blogPostService.editPostById(postToEdit, id);
+      console.log(response);
+      return res.status(200).json(response);
+    } catch (error) {
+      next(error);
+    }
+  });
 module.exports = blogPostRouter;
