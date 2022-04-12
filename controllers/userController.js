@@ -33,4 +33,15 @@ userRouter.get('/:id', tokenJWTValidate, async (req, res, next) => {
     next(error);
   }
 });
+userRouter.delete('/:me', tokenJWTValidate, async (req, res, next) => {
+  try {
+    const { id } = req.user;
+    const response = await userService.findUserById(id);
+    if (!response) return res.status(404).json({ message: 'User does not exist' });
+    await userService.deleteUserById(id);
+    return res.status(204).end();
+  } catch (error) {
+    next(error);
+  }
+});
 module.exports = userRouter;

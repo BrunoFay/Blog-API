@@ -25,13 +25,22 @@ const listUserById = async (id) => {
   const allUsers = await User.findByPk(id);
   return allUsers ? allUsers.dataValues : null;
 };
+const findUserById = async (id) => {
+  const allUsers = await User.findOne({ where: { id } });
+  return allUsers;
+};
 const checkIfEmailExist = async (email) => {
   const user = await User.findOne({ where: { email } });
   return user;
+};
+const deleteUserById = async (id) => {
+  await User.destroy({ where: { id } });
 };
 module.exports = {
   creatUser,
   checkIfEmailExist,
   listAllUsers,
   listUserById,
+  deleteUserById,
+  findUserById,
 };
