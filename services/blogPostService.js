@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const { BlogPost, User, Category, PostsCategorie } = require('../models');
+const { BlogPost, User, Category, PostsCategorie } = require('../modelsSequelize/models');
 
 /* op reference https://sequelize.org/docs/v6/core-concepts/model-querying-basics/ */
 

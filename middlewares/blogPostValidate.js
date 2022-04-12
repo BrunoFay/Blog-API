@@ -1,4 +1,4 @@
-const { Category } = require('../models');
+const { Category } = require('../modelsSequelize/models');
 
 const validateTitle = (req, res, next) => {
   const { title } = req.body;

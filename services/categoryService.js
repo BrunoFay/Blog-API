@@ -1,4 +1,4 @@
-const { Category } = require('../models');
+const { Category } = require('../modelsSequelize/models');
 
 const creatCategory = async (categoryInfos) => {
   const newCategory = await Category.create(categoryInfos);

@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User } = require('../modelsSequelize/models');
 
 const loginEmailValidate = (req, res, next) => {
   const { email } = req.body;

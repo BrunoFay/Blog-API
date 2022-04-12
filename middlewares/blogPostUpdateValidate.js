@@ -1,4 +1,4 @@
-const { BlogPost } = require('../models');
+const { BlogPost } = require('../modelsSequelize/models');
 
 const [validateTitle, validateContent] = require('./blogPostValidate');
 
