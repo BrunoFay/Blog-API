@@ -29,6 +29,14 @@ blogPostRouter.get('/', tokenJWTValidate, async (req, res, next) => {
     next(error);
   }
 });
+blogPostRouter.get('/search', tokenJWTValidate, async (req, res, next) => {
+  try {
+    const response = await blogPostService.getPostByQuery(req.query.q);
+    return res.status(200).json(response);
+  } catch (error) {
+    next(error);
+  }
+});
 
 blogPostRouter.get('/:id', tokenJWTValidate, async (req, res, next) => {
   try {

@@ -1,4 +1,7 @@
+const { Op } = require('sequelize');
 const { BlogPost, User, Category, PostsCategorie } = require('../models');
+
+/* op reference https://sequelize.org/docs/v6/core-concepts/model-querying-basics/ */
 
 const createLinkPostAndCategory = async (categories, postId) => {
   categories.map(async (category) => {
@@ -79,10 +82,31 @@ const editPostById = async (postUpdated, id) => {
 const removePostById = async (id) => {
   await BlogPost.destroy({ where: { id } });
 };
+const getPostByQuery = async (query) => {
+  const post = await BlogPost.findAll({
+    where: {
+      [Op.or]:
+        [{ title: { [Op.substring]: query } },
+        { content: { [Op.substring]: query } }],
+    },
+    include: [{
+      model: User,
+      as: 'user',
+      attributes: { exclude: ['password'] },
+    },
+    {
+      model: Category,
+      as: 'categories',
+      through: { attributes: [] },
+    }],
+  });
+  return post;
+};
 module.exports = {
   creatPost,
   listAllPosts,
   listPostById,
   editPostById,
   removePostById,
+  getPostByQuery,
 };
