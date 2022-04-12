@@ -61,11 +61,11 @@ const editPostById = async (postUpdated, id) => {
   await BlogPost.update(
     { title: postUpdated.title, content: postUpdated.content },
     { where: { id } },
-);
+  );
   const postEdited = await BlogPost
     .findOne({
       where: { id },
-include: [
+      include: [
         {
           model: Category,
           as: 'categories',
@@ -76,9 +76,13 @@ include: [
     });
   return postEdited;
 };
+const removePostById = async (id) => {
+  await BlogPost.destroy({ where: { id } });
+};
 module.exports = {
   creatPost,
   listAllPosts,
   listPostById,
   editPostById,
+  removePostById,
 };
