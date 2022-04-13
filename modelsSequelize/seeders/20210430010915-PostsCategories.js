@@ -8,7 +8,7 @@ module.exports = {
         },
         {
           postId: 2,
-          categoryId: 2,
+          categoryId: 1,
         },
 
       ], { timestamps: false });

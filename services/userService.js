@@ -2,12 +2,21 @@ const jwt = require('jsonwebtoken');
 const { User } = require('../modelsSequelize/models');
 require('dotenv').config();
 
+const encryptPassword = (password) => {
+  const jwtConfig = {
+    algorithm: 'HS256',
+  };
+  const passwordToDB = jwt.sign({ data: { password } }, process.env.JWT_SECRET, jwtConfig);
+  return passwordToDB;
+}
+
 const creatUser = async (userInfos) => {
   const jwtConfig = {
     expiresIn: '7d',
     algorithm: 'HS256',
   };
-  await User.create(userInfos);
+  const user = { ...userInfos, password: encryptPassword(userInfos.password) };
+  await User.create(user);
   const token = jwt.sign({
     data: {
       email: userInfos.email,
